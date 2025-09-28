@@ -1,6 +1,8 @@
 package re.forestier.edu;
 
 import org.junit.jupiter.api.*;
+
+import re.forestier.edu.rpg.UpdatePlayer;
 import re.forestier.edu.rpg.player;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -29,5 +31,15 @@ public class UnitTests {
         }
         fail();
     }
+
+    @Test
+    @DisplayName("Test des niveaux de joueur - XP=9 -> niveau 1")
+    void testLevelOneAtNineXp() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        UpdatePlayer.addXp(p, 9);
+        assertThat(p.retrieveLevel(), is(1));
+    }
+
+
 
 }
