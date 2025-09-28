@@ -29,4 +29,14 @@ public class UpdatePlayerTests {
         assertThat(p.getXp(), is(10));
         assertThat(p.retrieveLevel(), is(2));
     }
+
+    @Test
+    @DisplayName("addXp doit retourner false quand le joueur ne monte pas de niveau")
+    void addXp_quandJoueurNeMontePasNiveau_retourneFalse() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        boolean result = UpdatePlayer.addXp(p, 5);
+        assertThat(result, is(false));
+        assertThat(p.getXp(), is(5));
+        assertThat(p.retrieveLevel(), is(1));
+    }
 }
