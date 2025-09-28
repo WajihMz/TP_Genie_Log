@@ -40,6 +40,12 @@ public class UnitTests {
         assertThat(p.retrieveLevel(), is(1));
     }
 
-
+    @Test
+    @DisplayName("Test des niveaux de joueur - XP=10 -> niveau 2")
+    void testLevelTwoAtTenXp() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        UpdatePlayer.addXp(p, 10);
+        assertThat(p.retrieveLevel(), is(2));
+    }
 
 }
