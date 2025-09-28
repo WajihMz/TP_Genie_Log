@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-
+import static org.hamcrest.Matchers.containsString;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.DisplayName;
@@ -48,5 +50,23 @@ public class UpdatePlayerTests {
         UpdatePlayer.addXp(p, 10);
         assertThat(p.inventory.size(), is(1));
         assertThat(p.inventory.get(0), is(notNullValue()));
+    }
+
+    @Test
+    @DisplayName("majFinDeTour doit gérer le cas où le joueur est KO")
+    void majFinDeTour_quandJoueurKO_afficheMessageKO() {
+        player p = new player("T", "A", "ADVENTURER", 20, new ArrayList<>());
+        p.currenthealthpoints = 0;
+        
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        try {
+            UpdatePlayer.majFinDeTour(p);
+            String printed = out.toString();
+            assertThat(printed, containsString("Le joueur est KO !"));
+        } finally {
+            System.setOut(originalOut);
+        }
     }
 }
