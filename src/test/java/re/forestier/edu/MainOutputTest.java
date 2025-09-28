@@ -16,7 +16,6 @@ public class MainOutputTest {
         assertNotNull(main);
     }
 
-    
     @Test
     @DisplayName("La méthode main doit afficher les informations du joueur DWARF")
     void main_afficheInformationsJoueurDwarf() {
