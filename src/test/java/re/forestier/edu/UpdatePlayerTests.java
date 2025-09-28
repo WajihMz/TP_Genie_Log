@@ -3,6 +3,7 @@ package re.forestier.edu;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 import java.util.ArrayList;
 
@@ -38,5 +39,14 @@ public class UpdatePlayerTests {
         assertThat(result, is(false));
         assertThat(p.getXp(), is(5));
         assertThat(p.retrieveLevel(), is(1));
+    }
+
+    @Test
+    @DisplayName("addXp doit ajouter un objet aléatoire quand le joueur monte de niveau")
+    void addXp_quandJoueurMonteNiveau_ajouteObjetAleatoire() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        UpdatePlayer.addXp(p, 10);
+        assertThat(p.inventory.size(), is(1));
+        assertThat(p.inventory.get(0), is(notNullValue()));
     }
 }
