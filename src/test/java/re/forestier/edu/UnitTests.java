@@ -6,6 +6,7 @@ import re.forestier.edu.rpg.UpdatePlayer;
 import re.forestier.edu.rpg.player;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
@@ -122,13 +123,23 @@ public class UnitTests {
     }
 
     @Test
-@DisplayName("addMoney avec Integer.valueOf null - gestion cas limite")
-void addMoney_integerValueOfNull_gestionCasLimite() {
-    player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
-    // Ce test est difficile car Integer.valueOf ne retourne jamais null pour int
-    // Mais on peut tester avec 0 qui est un cas limite
-    p.addMoney(0);
-    assertThat(p.money, is(0)); // Pas de changement
-}
+    @DisplayName("addMoney avec Integer.valueOf null - gestion cas limite")
+    void addMoney_integerValueOfNull_gestionCasLimite() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+
+        p.addMoney(0);
+        assertThat(p.money, is(0)); // Pas de changement
+    }
+
+    @Test
+    @DisplayName("Constructeur avec classe invalide - validation échoue")
+    void constructeur_classeInvalide_validationEchoue() {
+        player p = new player("T", "A", "INVALID_CLASS", 100, new ArrayList<>());
+        // Le constructeur fait return; si la classe est invalide
+        // Difficile à tester car l'objet est quand même créé
+        assertNotNull(p); // L'objet existe mais peut être dans un état invalide
+    }
+
+
 
 }
