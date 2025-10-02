@@ -86,10 +86,15 @@ public class UnitTests {
     void addMoney_montantNull_gestionNull() {
         player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
         int initialMoney = p.money;
-        // Simuler un cas où Integer.valueOf pourrait retourner null
-        // Ce test couvre la branche value != null ? value : 0
         p.addMoney(0); // cas limite
         assertThat(p.money, is(initialMoney)); // pas de changement
+    }
+
+    @Test
+    @DisplayName("Test niveau initial - XP=0 -> niveau 1")
+    void testNiveauInitial_zeroXp_niveau1() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        assertThat(p.retrieveLevel(), is(1));
     }
 
 }
