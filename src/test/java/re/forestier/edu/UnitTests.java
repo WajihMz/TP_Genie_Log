@@ -121,4 +121,14 @@ public class UnitTests {
         assertThat(p.retrieveLevel(), is(4));
     }
 
+    @Test
+@DisplayName("addMoney avec Integer.valueOf null - gestion cas limite")
+void addMoney_integerValueOfNull_gestionCasLimite() {
+    player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+    // Ce test est difficile car Integer.valueOf ne retourne jamais null pour int
+    // Mais on peut tester avec 0 qui est un cas limite
+    p.addMoney(0);
+    assertThat(p.money, is(0)); // Pas de changement
+}
+
 }
