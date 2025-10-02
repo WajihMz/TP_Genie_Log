@@ -93,4 +93,16 @@ public class UpdatePlayerTests {
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.currenthealthpoints, is(11)); // +1 seulement
     }
+
+    @Test
+    @DisplayName("majFinDeTour DWARF HP < 50% avec Holy Elixir - double bonus")
+    void majFinDeTour_dwarfAvecHolyElixir_doubleBonus() {
+        player p = new player("T", "A", "DWARF", 100, new ArrayList<>());
+        p.healthpoints = 40;
+        p.currenthealthpoints = 10; // < 20 (moitié)
+        p.inventory.add("Holy Elixir");
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(12)); // +1 (classe) +1 (objet)
+    }
 }
