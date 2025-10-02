@@ -72,4 +72,13 @@ public class UnitTests {
         assertThat(p.retrieveLevel(), is(5));
     }
 
+    @Test
+    @DisplayName("removeMoney avec montant valide - succès")
+    void removeMoney_montantValide_succes() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        p.addMoney(50); // avoir 50 d'argent
+        p.removeMoney(30); // retirer 30
+        assertThat(p.money, is(20)); // reste 20
+    }
+
 }
