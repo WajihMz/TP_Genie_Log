@@ -135,11 +135,8 @@ public class UnitTests {
     @DisplayName("Constructeur avec classe invalide - validation échoue")
     void constructeur_classeInvalide_validationEchoue() {
         player p = new player("T", "A", "INVALID_CLASS", 100, new ArrayList<>());
-        // Le constructeur fait return; si la classe est invalide
-        // Difficile à tester car l'objet est quand même créé
-        assertNotNull(p); // L'objet existe mais peut être dans un état invalide
+
+        assertNotNull(p);
     }
-
-
 
 }
