@@ -105,4 +105,15 @@ public class UpdatePlayerTests {
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.currenthealthpoints, is(12)); // +1 (classe) +1 (objet)
     }
+
+    @Test
+@DisplayName("majFinDeTour ARCHER HP < 50% sans Magic Bow - bonus simple")
+void majFinDeTour_archerSansMagicBow_bonusSimple() {
+    player p = new player("T", "A", "ARCHER", 100, new ArrayList<>());
+    p.healthpoints = 40;
+    p.currenthealthpoints = 16; // < 20 (moitié)
+    
+    UpdatePlayer.majFinDeTour(p);
+    assertThat(p.currenthealthpoints, is(17)); // +1 seulement
+}
 }
