@@ -128,4 +128,16 @@ public class UpdatePlayerTests {
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.currenthealthpoints, is(18)); // +1 + (16/8-1) = +2
     }
+
+    @Test
+    @DisplayName("majFinDeTour ADVENTURER niveau >= 3 - pas de réduction HP")
+    void majFinDeTour_adventurerNiveauEleve_pasReductionHP() {
+        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        p.healthpoints = 40;
+        p.currenthealthpoints = 10; // < 20 (moitié)
+        UpdatePlayer.addXp(p, 27); // niveau 3 (>= 3)
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(12)); // +2 seulement
+    }
 }
