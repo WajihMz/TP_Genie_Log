@@ -107,13 +107,25 @@ public class UpdatePlayerTests {
     }
 
     @Test
-@DisplayName("majFinDeTour ARCHER HP < 50% sans Magic Bow - bonus simple")
-void majFinDeTour_archerSansMagicBow_bonusSimple() {
-    player p = new player("T", "A", "ARCHER", 100, new ArrayList<>());
-    p.healthpoints = 40;
-    p.currenthealthpoints = 16; // < 20 (moitié)
-    
-    UpdatePlayer.majFinDeTour(p);
-    assertThat(p.currenthealthpoints, is(17)); // +1 seulement
-}
+    @DisplayName("majFinDeTour ARCHER HP < 50% sans Magic Bow - bonus simple")
+    void majFinDeTour_archerSansMagicBow_bonusSimple() {
+        player p = new player("T", "A", "ARCHER", 100, new ArrayList<>());
+        p.healthpoints = 40;
+        p.currenthealthpoints = 16; // < 20 (moitié)
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(17)); // +1 seulement
+    }
+
+    @Test
+    @DisplayName("majFinDeTour ARCHER HP < 50% avec Magic Bow - bonus calculé")
+    void majFinDeTour_archerAvecMagicBow_bonusCalcule() {
+        player p = new player("T", "A", "ARCHER", 100, new ArrayList<>());
+        p.healthpoints = 40;
+        p.currenthealthpoints = 16; // < 20 (moitié)
+        p.inventory.add("Magic Bow");
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(18)); // +1 + (16/8-1) = +2
+    }
 }
