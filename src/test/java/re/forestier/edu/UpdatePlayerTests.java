@@ -162,4 +162,15 @@ public class UpdatePlayerTests {
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.currenthealthpoints, is(40)); // plafonné au max
     }
+
+    @Test
+    @DisplayName("majFinDeTour HP exactement à la moitié - pas de bonus")
+    void majFinDeTour_hpExactementMoitie_pasBonus() {
+        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        p.healthpoints = 40;
+        p.currenthealthpoints = 20; // exactement 20 (moitié)
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(20)); // pas de changement
+    }
 }
