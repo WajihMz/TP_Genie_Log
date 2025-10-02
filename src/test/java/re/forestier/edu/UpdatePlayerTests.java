@@ -173,4 +173,18 @@ public class UpdatePlayerTests {
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.currenthealthpoints, is(20)); // pas de changement
     }
+
+    @Test
+    @DisplayName("majFinDeTour HP >= 50% sans dépassement - pas de changement")
+    void majFinDeTour_hpSuperieurMoitie_pasChangement() {
+        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        p.healthpoints = 40;
+        p.currenthealthpoints = 25; // >= 20 (moitié) mais < 40 (max)
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(25)); // Pas de changement
+    }
+
+    
+    
 }

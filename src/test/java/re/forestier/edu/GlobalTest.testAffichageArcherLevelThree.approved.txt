@@ -1,0 +1,10 @@
+Joueur Archer joué par Test
+Niveau : 3 (XP totale : 27)
+
+Capacités :
+   VIS : 3
+   ATK : 3
+   CHA : 1
+   INT : 1
+
+Inventaire :
