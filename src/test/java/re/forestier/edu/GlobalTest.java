@@ -23,4 +23,24 @@ public class GlobalTest {
 
         verify(Affichage.afficherJoueur(player));
     }
+
+    @Test
+    @DisplayName("Test affichage joueur DWARF avec XP et inventaire")
+    void testAffichageDwarfWithXpAndInventory() {
+        player player = new player("Florian", "Gnognak le Barbare", "DWARF", 200, new ArrayList<>());
+        UpdatePlayer.addXp(player, 20);
+        player.inventory = new ArrayList<>();        
+        verify(Affichage.afficherJoueur(player));
+    }
+
+    @Test
+    @DisplayName("Test affichage joueur ARCHER niveau 3")
+    void testAffichageArcherLevelThree() {
+        player player = new player("Test", "Archer", "ARCHER", 100, new ArrayList<>());
+        UpdatePlayer.addXp(player, 27);
+        player.inventory = new ArrayList<>();
+        verify(Affichage.afficherJoueur(player));
+    }
+
+
 }
