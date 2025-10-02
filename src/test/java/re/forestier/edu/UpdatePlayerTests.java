@@ -185,6 +185,17 @@ public class UpdatePlayerTests {
         assertThat(p.currenthealthpoints, is(25)); // Pas de changement
     }
 
+    @Test
+    @DisplayName("majFinDeTour avec HP qui dépassent après plafonnement")
+    void majFinDeTour_testPlafonnementFinal() {
+        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        p.healthpoints = 20;
+        p.currenthealthpoints = 25; // > 20 (max)
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(20)); // Plafonné au max
+    }
+
     
     
 }
