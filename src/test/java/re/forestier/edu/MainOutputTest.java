@@ -35,4 +35,5 @@ public class MainOutputTest {
             System.setOut(originalOut);
         }
     }
+    
 }
