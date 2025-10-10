@@ -194,9 +194,6 @@ public class UpdatePlayerTests {
         
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.currenthealthpoints, is(20)); // Plafonné au max
-    }
-    
-
-    
+    }    
     
 }
