@@ -45,11 +45,8 @@ public class MainOutputTest {
     @DisplayName("Main doit tester l'effet de addMoney sur l'argent du joueur")
     void main_testAddMoneyEffect() {
         player testPlayer = new player("Florian", "Ruzberg de Rivehaute", "DWARF", 200, new ArrayList<>());
-        
         assertThat(testPlayer.money, is(200));
-        
         testPlayer.addMoney(400);
-        
         assertThat(testPlayer.money, is(600));
     }
 
