@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MainOutputTest {
@@ -69,6 +70,30 @@ public class MainOutputTest {
             String[] lines = printed.split("\n");
             assertThat(lines[0], containsString("Joueur"));
             assertThat(lines[0], containsString("Ruzberg de Rivehaute"));
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
+
+    @Test
+    @DisplayName("Main doit tester le deuxième affichage du joueur après addXp")
+    void main_testSecondPlayerDisplay() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        try {
+            Main.main(new String[]{});
+            String printed = out.toString();
+            
+            // Vérifier qu'il y a deux affichages séparés par "------------------"
+            String[] sections = printed.split("------------------");
+            assertThat(sections.length, is(2));
+            assertThat(sections[0], containsString("Joueur"));
+            assertThat(sections[1], containsString("Joueur"));
+
+            // Vérifier que le deuxième affichage est différent du premier (plus d'XP)
+            assertThat(sections[0], containsString("XP totale : 15"));
+            assertThat(sections[1], containsString("XP totale : 35"));
         } finally {
             System.setOut(originalOut);
         }
