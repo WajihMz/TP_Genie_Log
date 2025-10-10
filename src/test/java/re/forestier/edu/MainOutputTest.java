@@ -54,5 +54,24 @@ public class MainOutputTest {
             System.setOut(originalOut);
         }
     }
+
+    @Test
+    @DisplayName("Main doit tester le premier affichage du joueur")
+    void main_testFirstPlayerDisplay() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        try {
+            Main.main(new String[]{});
+            String printed = out.toString();
+            
+            // Vérifier que le premier affichage contient des éléments spécifiques
+            String[] lines = printed.split("\n");
+            assertThat(lines[0], containsString("Joueur"));
+            assertThat(lines[0], containsString("Ruzberg de Rivehaute"));
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
     
 }
