@@ -35,5 +35,24 @@ public class MainOutputTest {
             System.setOut(originalOut);
         }
     }
+
+    @Test
+    @DisplayName("Main doit tester l'effet de addMoney sur l'affichage")
+    void main_testAddMoneyEffect() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        try {
+            Main.main(new String[]{});
+            String printed = out.toString();
+            
+            assertThat(printed, containsString("Niveau : 2"));
+            assertThat(printed, containsString("Niveau : 3"));
+            assertThat(printed, containsString("XP totale : 15"));
+            assertThat(printed, containsString("XP totale : 35"));
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
     
 }
