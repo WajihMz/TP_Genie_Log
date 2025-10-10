@@ -1,9 +1,13 @@
 package re.forestier.edu;
 
 import org.junit.jupiter.api.Test;
+
+import re.forestier.edu.rpg.player;
+
 import org.junit.jupiter.api.DisplayName;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -38,22 +42,15 @@ public class MainOutputTest {
     }
 
     @Test
-    @DisplayName("Main doit tester l'effet de addMoney sur l'affichage")
+    @DisplayName("Main doit tester l'effet de addMoney sur l'argent du joueur")
     void main_testAddMoneyEffect() {
-        PrintStream originalOut = System.out;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        try {
-            Main.main(new String[]{});
-            String printed = out.toString();
-            
-            assertThat(printed, containsString("Niveau : 2"));
-            assertThat(printed, containsString("Niveau : 3"));
-            assertThat(printed, containsString("XP totale : 15"));
-            assertThat(printed, containsString("XP totale : 35"));
-        } finally {
-            System.setOut(originalOut);
-        }
+        player testPlayer = new player("Florian", "Ruzberg de Rivehaute", "DWARF", 200, new ArrayList<>());
+        
+        assertThat(testPlayer.money, is(200));
+        
+        testPlayer.addMoney(400);
+        
+        assertThat(testPlayer.money, is(600));
     }
 
     @Test
