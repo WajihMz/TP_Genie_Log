@@ -83,6 +83,14 @@ public class UnitTests {
     }
 
     @Test
+    @DisplayName("removeMoney avec montant égal à l'argent - cas limite pour tuer mutation PIT")
+    void removeMoney_montantEgalArgent_casLimite() {
+        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        p.removeMoney(100); // retirer exactement l'argent disponible
+        assertThat(p.money, is(0)); // doit rester 0
+    }
+
+    @Test
     @DisplayName("addMoney avec montant null - gestion null")
     void addMoney_montantNull_gestionNull() {
         player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
