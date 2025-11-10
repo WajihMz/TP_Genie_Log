@@ -195,5 +195,18 @@ public class UpdatePlayerTests {
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.currenthealthpoints, is(20)); // Plafonné au max
     }    
+
+    @Test 
+    @DisplayName("majFinDeTour joueur non KO - pas de message affiché") 
+    void majFinDeTour_joueurNonKO_pasMessage() {
+        player p = new player("T", "A", "ARCHER", 100, new ArrayList<>()); 
+        p.healthpoints = 30; 
+        p.currenthealthpoints = 1; 
+        ByteArrayOutputStream out = new ByteArrayOutputStream(); 
+        System.setOut(new PrintStream(out)); 
+        UpdatePlayer.majFinDeTour(p); 
+        System.setOut(System.out); 
+        assertThat(out.toString(), is("")); 
+    }
     
 }
