@@ -126,29 +126,28 @@ public class UpdatePlayer {
             System.out.println("Le joueur est KO !");
             return;
         }
+        boolean isAdventurer = "ADVENTURER".equals(player.getAvatarClass());
+        boolean isDwarf = "DWARF".equals(player.getAvatarClass());
+        boolean isArcher = "ARCHER".equals(player.getAvatarClass());
 
-        if(player.currenthealthpoints < player.healthpoints/2) {
-            if(!player.getAvatarClass().equals("ADVENTURER")) {
-                if(player.getAvatarClass().equals("DWARF")) {
-                    if(player.inventory.contains("Holy Elixir")) {
-                        player.currenthealthpoints+=1;
-                    }
-                    player.currenthealthpoints+=1;
-                } else if(player.getAvatarClass().equals("ADVENTURER")) {
-                    player.currenthealthpoints+=2;
-                }
-
-
-                if(player.getAvatarClass().equals("ARCHER")) {
-                    player.currenthealthpoints+=1;
-                    if(player.inventory.contains("Magic Bow")) {
-                        player.currenthealthpoints+=player.currenthealthpoints/8-1;
-                    }
+        if (player.currenthealthpoints < player.healthpoints / 2) {
+            if (isAdventurer) {
+                player.currenthealthpoints += 2;
+                if (player.retrieveLevel() < 3) {
+                    player.currenthealthpoints -= 1;
                 }
             } else {
-                player.currenthealthpoints+=2;
-                if(player.retrieveLevel() < 3) {
-                    player.currenthealthpoints-=1;
+                if (isDwarf) {
+                    if (player.inventory.contains("Holy Elixir")) {
+                        player.currenthealthpoints += 1;
+                    }
+                    player.currenthealthpoints += 1;
+                }
+                if (isArcher) {
+                    player.currenthealthpoints += 1;
+                    if (player.inventory.contains("Magic Bow")) {
+                        player.currenthealthpoints += player.currenthealthpoints / 8 - 1;
+                    }
                 }
             }
         } else if(player.currenthealthpoints >= player.healthpoints/2){
