@@ -150,7 +150,7 @@ public class UpdatePlayer {
                     }
                 }
             }
-        } else if(player.currenthealthpoints >= player.healthpoints/2){
+        } else {
             if(player.currenthealthpoints >= player.healthpoints) {
                 player.currenthealthpoints = player.healthpoints;
                 return;
