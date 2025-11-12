@@ -156,10 +156,5 @@ public class UpdatePlayer {
                 return;
             }
         }
-
-
-        if(player.currenthealthpoints >= player.healthpoints) {
-            player.currenthealthpoints = player.healthpoints;
-        }
     }
 }
