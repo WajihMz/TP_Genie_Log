@@ -6,13 +6,27 @@ import re.forestier.edu.rpg.STATS;
 
 import java.util.HashMap;
 
+/**
+ * Classe représentant un Nain, un type de joueur dans le jeu RPG
+ */
 public class Dwarf extends AbstractPlayer {
+    /**
+     * Constructeur pour créer un Nain
+     * @param playerName Le nom du joueur
+     * @param avatarName Le nom de l'avatar
+     * @param maxHP Les points de vie maximum
+     * @param money L'argent initial
+     */
     public Dwarf(String playerName, String avatarName, int maxHP, int money) {
         super(playerName, avatarName, maxHP, money);
         this.className = "Dwarf";
         this.classDescription = "un nain commun, qu'on trouve à la pelle";
     }
 
+    /**
+     * Résout les effets de fin de tour pour le Nain
+     * Si les HP sont en dessous de 50%, ajoute 2 HP si le Nain a un Holy Elixir, sinon 1 HP.
+     */
     @Override
     public void resolveEndOTurn() {
         if (isKO()) {
@@ -36,6 +50,9 @@ public class Dwarf extends AbstractPlayer {
         return inventory.contains(ITEM.HolyElixir.toString());
     }
 
+    /**
+     * Initialise les statistiques du Nain pour tous les niveaux
+     */
     @Override
     public void initStats() {
         HashMap<STATS, Integer[]> stats = new HashMap<>();

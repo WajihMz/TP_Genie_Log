@@ -5,13 +5,27 @@ import re.forestier.edu.rpg.STATS;
 
 import java.util.HashMap;
 
+/**
+ * Classe représentant un Archer, un type de joueur dans le jeu RPG
+ */
 public class Archer extends AbstractPlayer {
+    /**
+     * Constructeur pour créer un Archer
+     * @param playerName Le nom du joueur
+     * @param avatarName Le nom de l'avatar
+     * @param maxHP Les points de vie maximum
+     * @param money L'argent initial
+     */
     public Archer(String playerName, String avatarName, int maxHP, int money) {
         super(playerName, avatarName, maxHP, money);
         this.className = "Archer";
         this.classDescription = "un archer, ca tire des flèches.";
     }
 
+    /**
+     * Résout les effets de fin de tour pour l'Archer
+     * Si les HP sont en dessous de 50%, ajoute 1 HP. Si l'Archer a un Magic Bow, ajoute un bonus calculé.
+     */
     @Override
     public void resolveEndOTurn() {
         if (isKO()) {
@@ -41,6 +55,9 @@ public class Archer extends AbstractPlayer {
         return getCurrentHealthPoints() / 8 - 1;
     }
 
+    /**
+     * Initialise les statistiques de l'Archer pour tous les niveaux
+     */
     @Override
     public void initStats() {
         HashMap<STATS, Integer[]> stats = new HashMap<>();

@@ -14,7 +14,7 @@ public abstract class AbstractPlayer {
     private String avatarName;
     private final Money moneyManager;
     private int maxHealthPoints;
-    private int currenthealthpoints;
+    private int currentHealthPoints;
     protected String className;
     protected String classDescription;
     protected HashMap<STATS, Integer[]> statsPerLevel = new HashMap<>();
@@ -27,7 +27,7 @@ public abstract class AbstractPlayer {
         this.avatarName = avatarName;
         this.maxHealthPoints = maxHealthPoints;
         this.moneyManager = new Money();
-        this.currenthealthpoints = maxHealthPoints;
+        this.currentHealthPoints = maxHealthPoints;
         this.xp = 0;
         this.addMoney(money);
         this.initStats();
@@ -39,6 +39,11 @@ public abstract class AbstractPlayer {
         this.inventory.add(ITEM.randomItem().toString());
     }
 
+    /**
+     * Ajoute un objet à l'inventaire du joueur
+     * @param item L'objet à ajouter (représenté par une String temporairement)
+     * @throws InventoryException si le joueur n'a pas assez de capacité pour porter l'objet
+     */
     public void addItem(String item) {
         // Pour l'instant, on accepte les String. Plus tard, on migrera vers ITEM
         // Vérifier la capacité avant d'ajouter
@@ -72,26 +77,52 @@ public abstract class AbstractPlayer {
         return this.moneyManager.getAmount();
     }
 
+    /**
+     * Retire de l'argent au joueur
+     * @param amount Le montant à retirer
+     * @throws IllegalArgumentException si le montant est négatif ou si le joueur n'a pas assez d'argent
+     */
     public void removeMoney(int amount) throws IllegalArgumentException {
         this.moneyManager.removeMoney(amount);
     }
 
+    /**
+     * Ajoute de l'argent au joueur
+     * @param amount Le montant à ajouter
+     * @throws IllegalArgumentException si le montant est négatif
+     */
     public void addMoney(int amount) {
         this.moneyManager.addMoney(amount);
     }
 
+    /**
+     * Retourne le nom de la classe du joueur
+     * @return Le nom de la classe (ex: "Adventurer", "Archer", "Dwarf")
+     */
     public String getJobName() {
         return this.className;
     }
 
+    /**
+     * Retourne la description de la classe du joueur
+     * @return La description de la classe
+     */
     public String getDescription() {
         return this.classDescription;
     }
 
+    /**
+     * Retourne l'expérience totale du joueur
+     * @return L'expérience totale accumulée
+     */
     public int getXp() {
         return this.xp;
     }
 
+    /**
+     * Calcule le niveau actuel du joueur basé sur son XP
+     * @return Le niveau actuel (entre 1 et MAX_LEVEL)
+     */
     public int level() {
         int i = 0;
         while (i < LVL_ABSOLUTE_XP_REQ.length && LVL_ABSOLUTE_XP_REQ[i] <= xp) {
@@ -100,30 +131,59 @@ public abstract class AbstractPlayer {
         return i + 1;
     }
 
+    /**
+     * Retourne le niveau actuel du joueur
+     * @return Le niveau actuel (entre 1 et MAX_LEVEL)
+     */
     public int retrieveLevel() {
         return this.level();
     }
 
+    /**
+     * Ajoute de l'expérience au joueur
+     * Si le joueur monte de niveau, un objet aléatoire est ajouté à l'inventaire
+     * @param xp L'expérience à ajouter
+     */
+    /**
+     * Ajoute de l'expérience au joueur
+     * Si le joueur monte de niveau, un objet aléatoire est ajouté à l'inventaire
+     * @param xp L'expérience à ajouter
+     */
     public void addXp(int xp) {
-        int old_level = this.level();
+        int oldLevel = this.level();
         this.xp += xp;
-        if (this.level() != old_level) {
+        if (this.level() != oldLevel) {
             addRandomObject();
         }
     }
 
+    /**
+     * Retourne la valeur d'une statistique pour le niveau actuel du joueur
+     * @param stat La statistique à récupérer
+     * @return La valeur de la statistique au niveau actuel
+     */
     public int getStatistic(STATS stat) {
         assert stat != null;
         assert level() <= MAX_LEVEL;
         return statsPerLevel.get(stat)[this.level() - 1];
     }
 
+    /**
+     * Retourne la valeur d'une statistique pour un niveau spécifique
+     * @param stat La statistique à récupérer
+     * @param level Le niveau pour lequel récupérer la statistique
+     * @return La valeur de la statistique au niveau spécifié
+     */
     public int getStatForLevel(STATS stat, int level) {
         assert stat != null;
         assert level <= MAX_LEVEL;
         return statsPerLevel.get(stat)[level - 1];
     }
 
+    /**
+     * Retourne toutes les statistiques du joueur pour son niveau actuel
+     * @return Une HashMap contenant toutes les statistiques avec leurs valeurs
+     */
     public HashMap<STATS, Integer> getStatistics() {
         HashMap<STATS, Integer> map = new HashMap<>();
         for (STATS stat : STATS.values()) {
@@ -132,32 +192,60 @@ public abstract class AbstractPlayer {
         return map;
     }
 
+    /**
+     * Retourne le nom du joueur
+     * @return Le nom du joueur
+     */
     public String getPlayerName() {
         return this.playerName;
     }
 
+    /**
+     * Définit le nom du joueur
+     * @param playerName Le nouveau nom du joueur
+     */
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
+    /**
+     * Retourne le nom de l'avatar du joueur
+     * @return Le nom de l'avatar
+     */
     public String getAvatarName() {
         return avatarName;
     }
 
+    /**
+     * Définit le nom de l'avatar du joueur
+     * @param avatarName Le nouveau nom de l'avatar
+     */
     public void setAvatarName(String avatarName) {
         this.avatarName = avatarName;
     }
 
+    /**
+     * Retourne les points de vie maximum du joueur
+     * @return Les points de vie maximum
+     */
     public int getMaxHealthPoints() {
         return this.maxHealthPoints;
     }
 
+    /**
+     * Définit les points de vie maximum du joueur
+     * @param maxHealthPoints Les nouveaux points de vie maximum
+     */
     public void setMaxHealthPoints(int maxHealthPoints) {
         this.maxHealthPoints = maxHealthPoints;
     }
 
+    /**
+     * Retourne les points de vie actuels du joueur
+     * @return Les points de vie actuels
+     */
     public int getCurrentHealthPoints() {
-        return this.currenthealthpoints;
+        return this.currentHealthPoints;
     }
 
     /**
@@ -169,7 +257,7 @@ public abstract class AbstractPlayer {
         if (amount < 0) {
             throw new IllegalArgumentException("Trying to add a negative amount of health points");
         }
-        this.currenthealthpoints = Math.min(this.currenthealthpoints + amount, this.maxHealthPoints);
+        this.currentHealthPoints = Math.min(this.currentHealthPoints + amount, this.maxHealthPoints);
     }
 
     /**
@@ -179,7 +267,7 @@ public abstract class AbstractPlayer {
      */
     public void removeCurrentHealthPoints(int amount) {
         assert amount > 0 : "Amount must be positive";
-        this.currenthealthpoints = Math.max(this.currenthealthpoints - amount, 0);
+        this.currentHealthPoints = Math.max(this.currentHealthPoints - amount, 0);
     }
 
     /**
@@ -188,21 +276,41 @@ public abstract class AbstractPlayer {
      * @param currentHealthPoints Les nouveaux points de vie
      */
     public void setCurrentHealthPoints(int currentHealthPoints) {
-        this.currenthealthpoints = Math.max(0, Math.min(currentHealthPoints, this.maxHealthPoints));
+        this.currentHealthPoints = Math.max(0, Math.min(currentHealthPoints, this.maxHealthPoints));
     }
 
+    /**
+     * Vérifie si le joueur est KO (Knocked Out)
+     * @return true si les points de vie sont à 0 ou moins, false sinon
+     */
     public Boolean isKO() {
-        return this.currenthealthpoints <= 0;
+        return this.currentHealthPoints <= 0;
     }
 
+    /**
+     * Résout les effets de fin de tour pour le joueur
+     * Cette méthode est implémentée différemment selon la classe du joueur
+     */
     public abstract void resolveEndOTurn();
 
+    /**
+     * Initialise les statistiques du joueur selon sa classe
+     * Cette méthode est implémentée différemment selon la classe du joueur
+     */
     public abstract void initStats();
 
+    /**
+     * Affiche les informations du joueur
+     * @return Une représentation textuelle du joueur
+     */
     public String displayPlayer() {
         return this.toString();
     }
 
+    /**
+     * Retourne une représentation textuelle du joueur
+     * @return Une chaîne contenant les informations du joueur (nom, niveau, capacités, inventaire)
+     */
     @Override
     public String toString() {
         // Estimation de la taille initiale pour éviter les réallocations
@@ -239,6 +347,10 @@ public abstract class AbstractPlayer {
         return display.toString();
     }
 
+    /**
+     * Calcule le poids total de l'inventaire du joueur
+     * @return Le poids total de tous les objets dans l'inventaire
+     */
     public Integer getLoad() {
         // Calculer le poids total de l'inventaire
         return inventory.stream()
@@ -246,14 +358,26 @@ public abstract class AbstractPlayer {
                 .sum();
     }
 
+    /**
+     * Retourne la description de la classe du joueur
+     * @return La description de la classe
+     */
     public String getClassDescription() {
         return classDescription;
     }
 
+    /**
+     * Retourne le nom de la classe du joueur
+     * @return Le nom de la classe
+     */
     public String getClassName() {
         return className;
     }
 
+    /**
+     * Génère une représentation Markdown du joueur
+     * @return Une chaîne Markdown représentant le joueur
+     */
     public String toMarkdown() {
         // Estimation de la taille initiale pour éviter les réallocations
         int estimatedSize = 150 + (STATS.values().length * 25) + (this.inventory.size() * 35);
@@ -285,6 +409,10 @@ public abstract class AbstractPlayer {
         return markdown.toString();
     }
 
+    /**
+     * Calcule la capacité restante du joueur (poids disponible)
+     * @return La capacité restante (capacité totale - poids actuel)
+     */
     public Integer getRemainingCapacity() {
         return this.capacity - this.getLoad();
     }
