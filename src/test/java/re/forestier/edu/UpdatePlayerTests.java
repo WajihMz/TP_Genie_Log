@@ -1,6 +1,5 @@
 package re.forestier.edu;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -16,12 +15,8 @@ import re.forestier.edu.rpg.UpdatePlayer;
 import re.forestier.edu.rpg.player;
 
 public class UpdatePlayerTests {
-    @Test
-    @DisplayName("Le constructeur UpdatePlayer doit être testé")
-    void testUpdatePlayerConstructor() {
-        UpdatePlayer updatePlayer = new UpdatePlayer();
-        assertNotNull(updatePlayer);
-    }
+    // Le constructeur UpdatePlayer n'est plus testé car la classe est maintenant
+    // une classe utilitaire avec uniquement des méthodes statiques
 
     @Test
     @DisplayName("addXp doit retourner true quand le joueur monte de niveau")

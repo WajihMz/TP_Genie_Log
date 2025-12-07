@@ -2,6 +2,16 @@ package re.forestier.edu.rpg;
 
 import java.util.HashMap;
 
+/**
+ * Classe utilitaire temporaire pour compatibilité avec l'ancienne classe player.java
+ * 
+ * Cette classe sera supprimée en Phase 6 quand player.java sera supprimé.
+ * Les nouvelles classes (Adventurer, Archer, Dwarf) utilisent directement
+ * les méthodes d'AbstractPlayer (addXp(), resolveEndOTurn()).
+ * 
+ * @deprecated Cette classe est conservée uniquement pour compatibilité temporaire
+ */
+@Deprecated
 public class UpdatePlayer {
 
     /**
@@ -45,6 +55,18 @@ public class UpdatePlayer {
         return result;
     }
 
+    /**
+     * Ajoute de l'XP à un joueur et gère le level-up
+     * 
+     * @param player Le joueur (ancienne classe player.java)
+     * @param xp L'XP à ajouter
+     * @return true si le joueur a monté de niveau, false sinon
+     * 
+     * @deprecated Cette méthode est conservée uniquement pour compatibilité avec player.java
+     * Utiliser AbstractPlayer.addXp() pour les nouvelles classes (Adventurer, Archer, Dwarf)
+     * Sera supprimée en Phase 6 quand player.java sera supprimé
+     */
+    @Deprecated
     public static boolean addXp(player player, int xp) {
         int currentLevel = player.retrieveLevel();
         player.xp += xp;
@@ -66,7 +88,14 @@ public class UpdatePlayer {
      * Méthode wrapper pour utiliser resolveEndOTurn() avec polymorphisme
      * Utilise resolveEndOTurn() si le joueur est une instance d'AbstractPlayer
      * Sinon, utilise l'ancienne logique pour compatibilité avec player.java (temporaire)
+     * 
+     * @param player Le joueur (AbstractPlayer ou player.java)
+     * 
+     * @deprecated Cette méthode est conservée uniquement pour compatibilité avec player.java
+     * Utiliser AbstractPlayer.resolveEndOTurn() directement pour les nouvelles classes
+     * Sera supprimée en Phase 6 quand player.java sera supprimé
      */
+    @Deprecated
     public static void resolveEndOTurn(Object player) {
         if (player instanceof AbstractPlayer) {
             ((AbstractPlayer) player).resolveEndOTurn();
