@@ -68,7 +68,7 @@ public abstract class AbstractPlayer {
      * Get the money this player have in his pocket
      * @return The remaining money
      */
-    public Integer getMoney() {
+    public int getMoney() {
         return this.moneyManager.getAmount();
     }
 
