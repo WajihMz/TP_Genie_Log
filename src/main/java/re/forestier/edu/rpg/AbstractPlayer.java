@@ -160,24 +160,35 @@ public abstract class AbstractPlayer {
         return this.currenthealthpoints;
     }
 
+    /**
+     * Ajoute des points de vie au joueur
+     * @param amount Le montant à ajouter (doit être positif)
+     * @throws IllegalArgumentException si amount est négatif
+     */
     public void addCurrentHealthPoints(int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Trying to add a negative amount of health points");
         }
-        this.currenthealthpoints += amount;
-        this.currenthealthpoints = Math.min(this.currenthealthpoints, this.maxHealthPoints);
+        this.currenthealthpoints = Math.min(this.currenthealthpoints + amount, this.maxHealthPoints);
     }
 
+    /**
+     * Retire des points de vie au joueur
+     * @param amount Le montant à retirer (doit être positif)
+     * @throws AssertionError si amount est négatif ou nul
+     */
     public void removeCurrentHealthPoints(int amount) {
-        assert amount > 0;
-        this.currenthealthpoints -= amount;
-        this.currenthealthpoints = Math.max(this.currenthealthpoints, 0);
+        assert amount > 0 : "Amount must be positive";
+        this.currenthealthpoints = Math.max(this.currenthealthpoints - amount, 0);
     }
 
+    /**
+     * Définit les points de vie actuels du joueur
+     * Les HP sont automatiquement plafonnés entre 0 et maxHealthPoints
+     * @param currentHealthPoints Les nouveaux points de vie
+     */
     public void setCurrentHealthPoints(int currentHealthPoints) {
-        this.currenthealthpoints = currentHealthPoints;
-        this.currenthealthpoints = Math.min(this.currenthealthpoints, this.maxHealthPoints);
-        this.currenthealthpoints = Math.max(this.currenthealthpoints, 0);
+        this.currenthealthpoints = Math.max(0, Math.min(currentHealthPoints, this.maxHealthPoints));
     }
 
     public Boolean isKO() {
