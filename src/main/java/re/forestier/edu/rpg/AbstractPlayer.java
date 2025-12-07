@@ -41,7 +41,27 @@ public abstract class AbstractPlayer {
 
     public void addItem(String item) {
         // Pour l'instant, on accepte les String. Plus tard, on migrera vers ITEM
+        // Vérifier la capacité avant d'ajouter
+        int itemWeight = getItemWeightFromString(item);
+        if (this.getRemainingCapacity() < itemWeight) {
+            throw new InventoryException("Player can't carry this item, not enough capacity");
+        }
         this.inventory.add(item);
+    }
+
+    /**
+     * Helper method pour obtenir le poids d'un item depuis sa représentation String
+     * Utilisé temporairement jusqu'à la migration vers ArrayList<ITEM>
+     */
+    private int getItemWeightFromString(String itemString) {
+        // Chercher l'ITEM correspondant dans l'énumération
+        for (ITEM item : ITEM.values()) {
+            if (item.toString().equals(itemString)) {
+                return item.getWeight();
+            }
+        }
+        // Si l'item n'est pas trouvé, retourner 0 (pour compatibilité avec ancien code)
+        return 0;
     }
 
     /**
@@ -196,9 +216,10 @@ public abstract class AbstractPlayer {
     }
 
     public Integer getLoad() {
-        // Pour l'instant, on retourne 0 car l'inventaire contient des String
-        // Plus tard, on calculera le poids réel avec ITEM.getWeight()
-        return 0;
+        // Calculer le poids total de l'inventaire
+        return inventory.stream()
+                .mapToInt(this::getItemWeightFromString)
+                .sum();
     }
 
     public String getClassDescription() {
