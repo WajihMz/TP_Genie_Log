@@ -18,12 +18,23 @@ public class Adventurer extends AbstractPlayer {
             System.out.println("Le joueur est KO !");
             return;
         }
-        if (getCurrentHealthPoints() < getMaxHealthPoints() / 2) {
-            addCurrentHealthPoints(2);
-            if (level() < 3) {
-                removeCurrentHealthPoints(1);
-            }
+        
+        if (!isLowHealth()) {
+            return;
         }
+        
+        addCurrentHealthPoints(2);
+        if (isLowLevel()) {
+            removeCurrentHealthPoints(1);
+        }
+    }
+    
+    private boolean isLowHealth() {
+        return getCurrentHealthPoints() < getMaxHealthPoints() / 2;
+    }
+    
+    private boolean isLowLevel() {
+        return level() < 3;
     }
 
     @Override

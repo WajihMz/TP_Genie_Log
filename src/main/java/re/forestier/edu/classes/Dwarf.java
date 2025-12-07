@@ -19,14 +19,21 @@ public class Dwarf extends AbstractPlayer {
             System.out.println("Le joueur est KO !");
             return;
         }
-        if (getCurrentHealthPoints() < getMaxHealthPoints() / 2) {
-            // Vérifier si l'inventaire contient "Holy Elixir"
-            if (inventory.contains(ITEM.HolyElixir.toString())) {
-                addCurrentHealthPoints(2);
-            } else {
-                addCurrentHealthPoints(1);
-            }
+        
+        if (!isLowHealth()) {
+            return;
         }
+        
+        int healingAmount = hasHolyElixir() ? 2 : 1;
+        addCurrentHealthPoints(healingAmount);
+    }
+    
+    private boolean isLowHealth() {
+        return getCurrentHealthPoints() < getMaxHealthPoints() / 2;
+    }
+    
+    private boolean hasHolyElixir() {
+        return inventory.contains(ITEM.HolyElixir.toString());
     }
 
     @Override

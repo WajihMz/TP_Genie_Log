@@ -18,13 +18,27 @@ public class Archer extends AbstractPlayer {
             System.out.println("Le joueur est KO !");
             return;
         }
-        if (getCurrentHealthPoints() < getMaxHealthPoints() / 2) {
-            addCurrentHealthPoints(1);
-            // Vérifier si l'inventaire contient "Magic Bow"
-            if (inventory.contains("Magic Bow")) {
-                addCurrentHealthPoints(getCurrentHealthPoints() / 8 - 1);
-            }
+        
+        if (!isLowHealth()) {
+            return;
         }
+        
+        addCurrentHealthPoints(1);
+        if (hasMagicBow()) {
+            addCurrentHealthPoints(calculateMagicBowBonus());
+        }
+    }
+    
+    private boolean isLowHealth() {
+        return getCurrentHealthPoints() < getMaxHealthPoints() / 2;
+    }
+    
+    private boolean hasMagicBow() {
+        return inventory.contains("Magic Bow");
+    }
+    
+    private int calculateMagicBowBonus() {
+        return getCurrentHealthPoints() / 8 - 1;
     }
 
     @Override
