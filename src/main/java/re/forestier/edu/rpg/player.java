@@ -72,6 +72,39 @@ public class player {
         return this.xp;
     }
 
+    /**
+     * Affiche les informations du joueur
+     * Remplace Affichage.afficherJoueur() pour compatibilité
+     * 
+     * @return String représentant le joueur
+     */
+    public String displayPlayer() {
+        return this.toString();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder display = new StringBuilder();
+        display.append("Joueur ");
+        display.append(this.Avatar_name);
+        display.append(" joué par ");
+        display.append(this.playerName);
+        display.append("\nNiveau : ");
+        display.append(this.retrieveLevel());
+        display.append(" (XP totale : ");
+        display.append(this.xp);
+        display.append(")");
+        display.append("\n\nCapacités :");
+        this.abilities.forEach((name, level) -> {
+            display.append("\n   ").append(name).append(" : ").append(level);
+        });
+        display.append("\n\nInventaire :");
+        this.inventory.forEach(item -> {
+            display.append("\n   ").append(item);
+        });
+        return display.toString();
+    }
+
     /*
     Ингредиенты:
         Для теста:

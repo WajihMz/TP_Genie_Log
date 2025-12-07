@@ -2,7 +2,6 @@ package re.forestier.edu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import re.forestier.edu.rpg.Affichage;
 import re.forestier.edu.rpg.UpdatePlayer;
 import re.forestier.edu.rpg.player;
 
@@ -21,7 +20,7 @@ public class GlobalTest {
         UpdatePlayer.addXp(player, 20);
         player.inventory = new ArrayList<>();
 
-        verify(Affichage.afficherJoueur(player));
+        verify(player.toString());
     }
 
     @Test
@@ -30,7 +29,7 @@ public class GlobalTest {
         player player = new player("Florian", "Gnognak le Barbare", "DWARF", 200, new ArrayList<>());
         UpdatePlayer.addXp(player, 20);
         player.inventory = new ArrayList<>();
-        String result = Affichage.afficherJoueur(player);
+        String result = player.toString();
         
         assertThat(result, containsString("Gnognak le Barbare"));
         assertThat(result, containsString("Florian"));
@@ -48,7 +47,7 @@ public class GlobalTest {
         player player = new player("Test", "Archer", "ARCHER", 100, new ArrayList<>());
         UpdatePlayer.addXp(player, 27);
         player.inventory = new ArrayList<>();
-        String result = Affichage.afficherJoueur(player);
+        String result = player.toString();
         
         assertThat(result, containsString("Archer"));
         assertThat(result, containsString("Test"));
@@ -60,19 +59,15 @@ public class GlobalTest {
         assertThat(result, containsString("INT"));
     }
 
-    @Test
-    @DisplayName("Test constructeur classe Affichage")
-    void testConstructeurAffichage() {
-        Affichage affichage = new Affichage();
-        assertNotNull(affichage);
-    }
+    // Le test du constructeur Affichage a été supprimé car la classe Affichage est supprimée
+    // L'affichage est maintenant géré par player.toString()
 
     @Test
     @DisplayName("Test affichage avec inventaire non vide pour tuer la mutation PIT")
     void testAffichageWithInventory() {
         player p = new player("Test", "Test", "DWARF", 200, new ArrayList<>());
         p.inventory.add("Épée");
-        String result = Affichage.afficherJoueur(p);
+        String result = p.toString();
         assertThat(result, containsString("Épée"));
     }
     
