@@ -29,8 +29,17 @@ public class GlobalTest {
     void testAffichageDwarfWithXpAndInventory() {
         player player = new player("Florian", "Gnognak le Barbare", "DWARF", 200, new ArrayList<>());
         UpdatePlayer.addXp(player, 20);
-        player.inventory = new ArrayList<>();        
-        verify(Affichage.afficherJoueur(player));
+        player.inventory = new ArrayList<>();
+        String result = Affichage.afficherJoueur(player);
+        
+        assertThat(result, containsString("Gnognak le Barbare"));
+        assertThat(result, containsString("Florian"));
+        assertThat(result, containsString("Niveau : 2"));
+        assertThat(result, containsString("XP totale : 20"));
+        assertThat(result, containsString("DEF"));
+        assertThat(result, containsString("ALC"));
+        assertThat(result, containsString("ATK"));
+        assertThat(result, containsString("INT"));
     }
 
     @Test
@@ -39,7 +48,16 @@ public class GlobalTest {
         player player = new player("Test", "Archer", "ARCHER", 100, new ArrayList<>());
         UpdatePlayer.addXp(player, 27);
         player.inventory = new ArrayList<>();
-        verify(Affichage.afficherJoueur(player));
+        String result = Affichage.afficherJoueur(player);
+        
+        assertThat(result, containsString("Archer"));
+        assertThat(result, containsString("Test"));
+        assertThat(result, containsString("Niveau : 3"));
+        assertThat(result, containsString("XP totale : 27"));
+        assertThat(result, containsString("VIS"));
+        assertThat(result, containsString("ATK"));
+        assertThat(result, containsString("CHA"));
+        assertThat(result, containsString("INT"));
     }
 
     @Test
