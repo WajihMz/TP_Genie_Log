@@ -19,7 +19,7 @@ public abstract class AbstractPlayer {
     protected String classDescription;
     protected HashMap<STATS, Integer[]> statsPerLevel = new HashMap<>();
     private int xp;
-    public ArrayList<String> inventory; // Temporairement String pour compatibilité
+    public ArrayList<String> inventory;
     private final Integer capacity;
 
     public AbstractPlayer(String playerName, String avatarName, int maxHealthPoints, int money) {
@@ -41,12 +41,10 @@ public abstract class AbstractPlayer {
 
     /**
      * Ajoute un objet à l'inventaire du joueur
-     * @param item L'objet à ajouter (représenté par une String temporairement)
+     * @param item L'objet à ajouter (représenté par une String)
      * @throws InventoryException si le joueur n'a pas assez de capacité pour porter l'objet
      */
     public void addItem(String item) {
-        // Pour l'instant, on accepte les String. Plus tard, on migrera vers ITEM
-        // Vérifier la capacité avant d'ajouter
         int itemWeight = getItemWeightFromString(item);
         if (this.getRemainingCapacity() < itemWeight) {
             throw new InventoryException("Player can't carry this item, not enough capacity");
@@ -56,16 +54,13 @@ public abstract class AbstractPlayer {
 
     /**
      * Helper method pour obtenir le poids d'un item depuis sa représentation String
-     * Utilisé temporairement jusqu'à la migration vers ArrayList<ITEM>
      */
     private int getItemWeightFromString(String itemString) {
-        // Chercher l'ITEM correspondant dans l'énumération
         for (ITEM item : ITEM.values()) {
             if (item.toString().equals(itemString)) {
                 return item.getWeight();
             }
         }
-        // Si l'item n'est pas trouvé, retourner 0 (pour compatibilité avec ancien code)
         return 0;
     }
 
@@ -313,8 +308,6 @@ public abstract class AbstractPlayer {
      */
     @Override
     public String toString() {
-        // Estimation de la taille initiale pour éviter les réallocations
-        // ~100 caractères pour le header + ~20 par stat + ~30 par item
         int estimatedSize = 100 + (STATS.values().length * 20) + (this.inventory.size() * 30);
         StringBuilder display = new StringBuilder(estimatedSize);
         
@@ -329,11 +322,7 @@ public abstract class AbstractPlayer {
         display.append(")");
         display.append("\n\nCapacités :");
         
-        // Utiliser l'ordre d'affichage original pour compatibilité avec les tests ApprovalTests
-        // Ordre attendu basé sur le fichier .approved.txt: DEF, ATK, CHA, INT, ALC, VIS
         STATS[] displayOrder = {STATS.DEF, STATS.ATK, STATS.CHA, STATS.INT, STATS.ALC, STATS.VIS};
-        
-        // Optimisation : éviter l'appel double à getStatistic()
         for (STATS stat : displayOrder) {
             int statValue = this.getStatistic(stat);
             if (statValue != 0) {
@@ -352,7 +341,6 @@ public abstract class AbstractPlayer {
      * @return Le poids total de tous les objets dans l'inventaire
      */
     public Integer getLoad() {
-        // Calculer le poids total de l'inventaire
         return inventory.stream()
                 .mapToInt(this::getItemWeightFromString)
                 .sum();
@@ -379,7 +367,6 @@ public abstract class AbstractPlayer {
      * @return Une chaîne Markdown représentant le joueur
      */
     public String toMarkdown() {
-        // Estimation de la taille initiale pour éviter les réallocations
         int estimatedSize = 150 + (STATS.values().length * 25) + (this.inventory.size() * 35);
         StringBuilder markdown = new StringBuilder(estimatedSize);
         
@@ -393,7 +380,6 @@ public abstract class AbstractPlayer {
         markdown.append(this.retrieveLevel());
         markdown.append("\n\n## Statistics :\n");
         
-        // Optimisation : éviter l'appel double à getStatistic()
         for (STATS stat : STATS.values()) {
             int statValue = this.getStatistic(stat);
             if (statValue != 0) {
@@ -432,10 +418,7 @@ public abstract class AbstractPlayer {
             throw new InventoryException("Item not in inventory: " + item.getName());
         }
         
-        // Retirer l'item de l'inventaire
         this.inventory.remove(itemString);
-        
-        // Ajouter la valeur de l'item à l'argent du joueur
         this.addMoney(item.getValue());
     }
 
@@ -460,33 +443,23 @@ public abstract class AbstractPlayer {
         
         String itemString = item.toString();
         
-        // Vérifier que l'item est dans l'inventaire du vendeur
         if (!this.inventory.contains(itemString)) {
             throw new InventoryException("Item not in seller's inventory: " + item.getName());
         }
         
-        // Vérifier que l'acheteur a assez d'argent
         int itemValue = item.getValue();
         if (buyer.getMoney() < itemValue) {
             throw new NotEnoughMoneyException("Buyer does not have enough money. Required: " + itemValue + ", Available: " + buyer.getMoney());
         }
         
-        // Vérifier que l'acheteur a assez de capacité
         int itemWeight = item.getWeight();
         if (buyer.getRemainingCapacity() < itemWeight) {
             throw new InventoryException("Buyer does not have enough capacity. Required: " + itemWeight + ", Available: " + buyer.getRemainingCapacity());
         }
         
-        // Retirer l'item de l'inventaire du vendeur
         this.inventory.remove(itemString);
-        
-        // Ajouter l'item à l'inventaire de l'acheteur
         buyer.addItem(itemString);
-        
-        // Retirer l'argent de l'acheteur
         buyer.removeMoney(itemValue);
-        
-        // Ajouter l'argent au vendeur
         this.addMoney(itemValue);
     }
 }
