@@ -194,7 +194,11 @@ public abstract class AbstractPlayer {
 
     @Override
     public String toString() {
-        StringBuilder display = new StringBuilder();
+        // Estimation de la taille initiale pour éviter les réallocations
+        // ~100 caractères pour le header + ~20 par stat + ~30 par item
+        int estimatedSize = 100 + (STATS.values().length * 20) + (this.inventory.size() * 30);
+        StringBuilder display = new StringBuilder(estimatedSize);
+        
         display.append("Joueur ");
         display.append(this.getAvatarName());
         display.append(" joué par ");
@@ -205,13 +209,18 @@ public abstract class AbstractPlayer {
         display.append(this.getXp());
         display.append(")");
         display.append("\n\nCapacités :");
+        
+        // Optimisation : éviter l'appel double à getStatistic()
         for (STATS stat : STATS.values()) {
-            if (this.getStatistic(stat) != 0) {
-                display.append("\n   ").append(stat).append(" : ").append(this.getStatistic(stat));
+            int statValue = this.getStatistic(stat);
+            if (statValue != 0) {
+                display.append("\n   ").append(stat).append(" : ").append(statValue);
             }
         }
+        
         display.append("\n\nInventaire :");
         this.inventory.forEach(item -> display.append("\n   ").append(item));
+        
         return display.toString();
     }
 
@@ -231,7 +240,10 @@ public abstract class AbstractPlayer {
     }
 
     public String toMarkdown() {
-        StringBuilder markdown = new StringBuilder();
+        // Estimation de la taille initiale pour éviter les réallocations
+        int estimatedSize = 150 + (STATS.values().length * 25) + (this.inventory.size() * 35);
+        StringBuilder markdown = new StringBuilder(estimatedSize);
+        
         markdown.append("# ");
         markdown.append(this.playerName);
         markdown.append(" *as* ");
@@ -241,11 +253,15 @@ public abstract class AbstractPlayer {
         markdown.append("**Level** : ");
         markdown.append(this.retrieveLevel());
         markdown.append("\n\n## Statistics :\n");
+        
+        // Optimisation : éviter l'appel double à getStatistic()
         for (STATS stat : STATS.values()) {
-            if (this.getStatistic(stat) != 0) {
-                markdown.append("\n * **").append(stat).append("** : ").append(this.getStatistic(stat));
+            int statValue = this.getStatistic(stat);
+            if (statValue != 0) {
+                markdown.append("\n * **").append(stat).append("** : ").append(statValue);
             }
         }
+        
         markdown.append("\n\n");
         markdown.append("## Inventory :\n");
         this.inventory.forEach(item -> markdown.append("\n * ").append(item));
