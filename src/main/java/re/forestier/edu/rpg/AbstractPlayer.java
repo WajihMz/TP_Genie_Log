@@ -416,5 +416,78 @@ public abstract class AbstractPlayer {
     public Integer getRemainingCapacity() {
         return this.capacity - this.getLoad();
     }
+
+    /**
+     * Vendre un objet (retirer de l'inventaire et ajouter de l'argent)
+     * @param item L'objet à vendre
+     * @throws InventoryException si l'objet n'est pas dans l'inventaire
+     */
+    public void sell(ITEM item) {
+        if (item == null) {
+            throw new IllegalArgumentException("Cannot sell null item");
+        }
+        
+        String itemString = item.toString();
+        if (!this.inventory.contains(itemString)) {
+            throw new InventoryException("Item not in inventory: " + item.getName());
+        }
+        
+        // Retirer l'item de l'inventaire
+        this.inventory.remove(itemString);
+        
+        // Ajouter la valeur de l'item à l'argent du joueur
+        this.addMoney(item.getValue());
+    }
+
+    /**
+     * Vendre un objet à un autre joueur
+     * @param item L'objet à vendre
+     * @param buyer Le joueur qui achète l'objet
+     * @throws InventoryException si l'objet n'est pas dans l'inventaire du vendeur ou si l'acheteur n'a pas assez de capacité
+     * @throws NotEnoughMoneyException si l'acheteur n'a pas assez d'argent
+     * @throws IllegalArgumentException si l'acheteur est null ou si c'est le même joueur
+     */
+    public void sell(ITEM item, AbstractPlayer buyer) {
+        if (item == null) {
+            throw new IllegalArgumentException("Cannot sell null item");
+        }
+        if (buyer == null) {
+            throw new IllegalArgumentException("Buyer cannot be null");
+        }
+        if (buyer == this) {
+            throw new IllegalArgumentException("Cannot sell item to yourself");
+        }
+        
+        String itemString = item.toString();
+        
+        // Vérifier que l'item est dans l'inventaire du vendeur
+        if (!this.inventory.contains(itemString)) {
+            throw new InventoryException("Item not in seller's inventory: " + item.getName());
+        }
+        
+        // Vérifier que l'acheteur a assez d'argent
+        int itemValue = item.getValue();
+        if (buyer.getMoney() < itemValue) {
+            throw new NotEnoughMoneyException("Buyer does not have enough money. Required: " + itemValue + ", Available: " + buyer.getMoney());
+        }
+        
+        // Vérifier que l'acheteur a assez de capacité
+        int itemWeight = item.getWeight();
+        if (buyer.getRemainingCapacity() < itemWeight) {
+            throw new InventoryException("Buyer does not have enough capacity. Required: " + itemWeight + ", Available: " + buyer.getRemainingCapacity());
+        }
+        
+        // Retirer l'item de l'inventaire du vendeur
+        this.inventory.remove(itemString);
+        
+        // Ajouter l'item à l'inventaire de l'acheteur
+        buyer.addItem(itemString);
+        
+        // Retirer l'argent de l'acheteur
+        buyer.removeMoney(itemValue);
+        
+        // Ajouter l'argent au vendeur
+        this.addMoney(itemValue);
+    }
 }
 
