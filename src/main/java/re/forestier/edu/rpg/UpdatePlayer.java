@@ -1,12 +1,8 @@
 package re.forestier.edu.rpg;
 
 import java.util.HashMap;
-import java.util.Random;
 
 public class UpdatePlayer {
-
-    private final static String[] objectList = {"Lookout Ring : Prevents surprise attacks","Scroll of Stupidity : INT-2 when applied to an enemy", "Draupnir : Increases XP gained by 100%", "Magic Charm : Magic +10 for 5 rounds", "Rune Staff of Curse : May burn your ennemies... Or yourself. Who knows?", "Combat Edge : Well, that's an edge", "Holy Elixir : Recover your HP"
-    };
 
     public static HashMap<String, HashMap<Integer, HashMap<String, Integer>>> abilitiesPerTypeAndLevel() {
         HashMap<String, HashMap<Integer, HashMap<String, Integer>>> abilitiesPerTypeAndLevel = new HashMap<>();
@@ -106,9 +102,7 @@ public class UpdatePlayer {
         if (newLevel != currentLevel) {
             // Player leveled-up!
             // Give a random object
-            ;
-            Random random = new Random();
-            player.inventory.add(objectList[random.nextInt(objectList.length)]);
+            player.inventory.add(ITEM.randomItem().toString());
 
             // Add/upgrade abilities to player
             HashMap<String, Integer> abilities = abilitiesPerTypeAndLevel().get(player.getAvatarClass()).get(newLevel);
