@@ -210,8 +210,12 @@ public abstract class AbstractPlayer {
         display.append(")");
         display.append("\n\nCapacités :");
         
+        // Utiliser l'ordre d'affichage original pour compatibilité avec les tests ApprovalTests
+        // Ordre attendu basé sur le fichier .approved.txt: DEF, ATK, CHA, INT, ALC, VIS
+        STATS[] displayOrder = {STATS.DEF, STATS.ATK, STATS.CHA, STATS.INT, STATS.ALC, STATS.VIS};
+        
         // Optimisation : éviter l'appel double à getStatistic()
-        for (STATS stat : STATS.values()) {
+        for (STATS stat : displayOrder) {
             int statValue = this.getStatistic(stat);
             if (statValue != 0) {
                 display.append("\n   ").append(stat).append(" : ").append(statValue);

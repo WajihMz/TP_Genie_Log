@@ -2,23 +2,24 @@ package re.forestier.edu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import re.forestier.edu.rpg.UpdatePlayer;
-import re.forestier.edu.rpg.player;
-
-import java.util.ArrayList;
+import re.forestier.edu.classes.Adventurer;
+import re.forestier.edu.classes.Archer;
+import re.forestier.edu.classes.Dwarf;
+import re.forestier.edu.rpg.AbstractPlayer;
 
 import static org.approvaltests.Approvals.verify;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.hamcrest.Matchers.containsString;
 
 public class GlobalTest {
 
     @Test
     void testAffichageBase() {
-        player player = new player("Florian", "Gnognak le Barbare", "ADVENTURER", 200, new ArrayList<>());
-        UpdatePlayer.addXp(player, 20);
-        player.inventory = new ArrayList<>();
+        AbstractPlayer player = new Adventurer("Florian", "Gnognak le Barbare", 200, 0);
+        // Ajouter de l'XP (ajoute un objet aléatoire au level-up)
+        player.addXp(20);
+        // Vider l'inventaire pour correspondre au test original
+        player.inventory.clear();
 
         verify(player.toString());
     }
@@ -26,9 +27,9 @@ public class GlobalTest {
     @Test
     @DisplayName("Test affichage joueur DWARF avec XP et inventaire")
     void testAffichageDwarfWithXpAndInventory() {
-        player player = new player("Florian", "Gnognak le Barbare", "DWARF", 200, new ArrayList<>());
-        UpdatePlayer.addXp(player, 20);
-        player.inventory = new ArrayList<>();
+        AbstractPlayer player = new Dwarf("Florian", "Gnognak le Barbare", 200, 0);
+        player.addXp(20);
+        player.inventory.clear();
         String result = player.toString();
         
         assertThat(result, containsString("Gnognak le Barbare"));
@@ -44,9 +45,9 @@ public class GlobalTest {
     @Test
     @DisplayName("Test affichage joueur ARCHER niveau 3")
     void testAffichageArcherLevelThree() {
-        player player = new player("Test", "Archer", "ARCHER", 100, new ArrayList<>());
-        UpdatePlayer.addXp(player, 27);
-        player.inventory = new ArrayList<>();
+        AbstractPlayer player = new Archer("Test", "Archer", 100, 0);
+        player.addXp(27);
+        player.inventory.clear();
         String result = player.toString();
         
         assertThat(result, containsString("Archer"));
@@ -59,13 +60,10 @@ public class GlobalTest {
         assertThat(result, containsString("INT"));
     }
 
-    // Le test du constructeur Affichage a été supprimé car la classe Affichage est supprimée
-    // L'affichage est maintenant géré par player.toString()
-
     @Test
     @DisplayName("Test affichage avec inventaire non vide pour tuer la mutation PIT")
     void testAffichageWithInventory() {
-        player p = new player("Test", "Test", "DWARF", 200, new ArrayList<>());
+        AbstractPlayer p = new Dwarf("Test", "Test", 200, 0);
         p.inventory.add("Épée");
         String result = p.toString();
         assertThat(result, containsString("Épée"));
