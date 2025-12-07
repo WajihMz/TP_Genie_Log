@@ -62,41 +62,53 @@ public class UpdatePlayer {
         return false;
     }
 
-    // majFinDeTour met à jour les points de vie
-    public static void majFinDeTour(player player) {
-        if(player.currenthealthpoints == 0) {
-            System.out.println("Le joueur est KO !");
-            return;
-        }
-        boolean isAdventurer = "ADVENTURER".equals(player.getAvatarClass());
-        boolean isDwarf = "DWARF".equals(player.getAvatarClass());
-        boolean isArcher = "ARCHER".equals(player.getAvatarClass());
+    /**
+     * Méthode wrapper pour utiliser resolveEndOTurn() avec polymorphisme
+     * Utilise resolveEndOTurn() si le joueur est une instance d'AbstractPlayer
+     * Sinon, utilise l'ancienne logique pour compatibilité avec player.java (temporaire)
+     */
+    public static void resolveEndOTurn(Object player) {
+        if (player instanceof AbstractPlayer) {
+            ((AbstractPlayer) player).resolveEndOTurn();
+        } else if (player instanceof player) {
+            // Compatibilité temporaire avec l'ancienne classe player
+            // Cette logique sera supprimée en Phase 6 quand player.java sera supprimé
+            player oldPlayer = (player) player;
+            if(oldPlayer.currenthealthpoints == 0) {
+                System.out.println("Le joueur est KO !");
+                return;
+            }
+            boolean isAdventurer = "ADVENTURER".equals(oldPlayer.getAvatarClass());
+            boolean isDwarf = "DWARF".equals(oldPlayer.getAvatarClass());
+            boolean isArcher = "ARCHER".equals(oldPlayer.getAvatarClass());
 
-        if (player.currenthealthpoints < player.healthpoints / 2) {
-            if (isAdventurer) {
-                player.currenthealthpoints += 2;
-                if (player.retrieveLevel() < 3) {
-                    player.currenthealthpoints -= 1;
+            if (oldPlayer.currenthealthpoints < oldPlayer.healthpoints / 2) {
+                if (isAdventurer) {
+                    oldPlayer.currenthealthpoints += 2;
+                    if (oldPlayer.retrieveLevel() < 3) {
+                        oldPlayer.currenthealthpoints -= 1;
+                    }
+                } else {
+                    if (isDwarf) {
+                        if (oldPlayer.inventory.contains("Holy Elixir")) {
+                            oldPlayer.currenthealthpoints += 1;
+                        }
+                        oldPlayer.currenthealthpoints += 1;
+                    }
+                    if (isArcher) {
+                        oldPlayer.currenthealthpoints += 1;
+                        if (oldPlayer.inventory.contains("Magic Bow")) {
+                            oldPlayer.currenthealthpoints += oldPlayer.currenthealthpoints / 8 - 1;
+                        }
+                    }
                 }
             } else {
-                if (isDwarf) {
-                    if (player.inventory.contains("Holy Elixir")) {
-                        player.currenthealthpoints += 1;
-                    }
-                    player.currenthealthpoints += 1;
+                if(oldPlayer.currenthealthpoints >= oldPlayer.healthpoints) {
+                    oldPlayer.currenthealthpoints = oldPlayer.healthpoints;
+                    return;
                 }
-                if (isArcher) {
-                    player.currenthealthpoints += 1;
-                    if (player.inventory.contains("Magic Bow")) {
-                        player.currenthealthpoints += player.currenthealthpoints / 8 - 1;
-                    }
-                }
-            }
-        } else {
-            if(player.currenthealthpoints >= player.healthpoints) {
-                player.currenthealthpoints = player.healthpoints;
-                return;
             }
         }
     }
+    
 }

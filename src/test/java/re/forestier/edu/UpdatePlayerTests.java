@@ -62,7 +62,7 @@ public class UpdatePlayerTests {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         try {
-            UpdatePlayer.majFinDeTour(p);
+            UpdatePlayer.resolveEndOTurn(p);
             String printed = out.toString();
             assertThat(printed, containsString("Le joueur est KO !"));
         } finally {
@@ -79,7 +79,7 @@ public class UpdatePlayerTests {
         
         UpdatePlayer.addXp(p, 5); // niveau 1 (< 3)
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(11)); // +2 puis -1 = +1
     }
 
@@ -90,7 +90,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 10; // < 20 (moitié)
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(11)); // +1 seulement
     }
 
@@ -102,7 +102,7 @@ public class UpdatePlayerTests {
         p.currenthealthpoints = 10; // < 20 (moitié)
         p.inventory.add("Holy Elixir");
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(12)); // +1 (classe) +1 (objet)
     }
 
@@ -113,7 +113,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 16; // < 20 (moitié)
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(17)); // +1 seulement
     }
 
@@ -125,7 +125,7 @@ public class UpdatePlayerTests {
         p.currenthealthpoints = 16; // < 20 (moitié)
         p.inventory.add("Magic Bow");
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(18)); // +1 + (16/8-1) = +2
     }
 
@@ -137,7 +137,7 @@ public class UpdatePlayerTests {
         p.currenthealthpoints = 10; // < 20 (moitié)
         UpdatePlayer.addXp(p, 27); // niveau 3 (>= 3)
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(12)); // +2 seulement
     }
 
@@ -148,7 +148,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 25; // >= 20 (moitié) mais < 40 (max)
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(25)); // pas de changement
     }
 
@@ -159,7 +159,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 45; // > 40 (max)
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(40)); // plafonné au max
     }
 
@@ -170,7 +170,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 20; // exactement 20 (moitié)
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(20)); // pas de changement
     }
 
@@ -181,7 +181,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 25; // >= 20 (moitié) mais < 40 (max)
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(25)); // Pas de changement
     }
 
@@ -192,7 +192,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 20;
         p.currenthealthpoints = 25; // > 20 (max)
         
-        UpdatePlayer.majFinDeTour(p);
+        UpdatePlayer.resolveEndOTurn(p);
         assertThat(p.currenthealthpoints, is(20)); // Plafonné au max
     }    
 
@@ -204,7 +204,7 @@ public class UpdatePlayerTests {
         p.currenthealthpoints = 1; 
         ByteArrayOutputStream out = new ByteArrayOutputStream(); 
         System.setOut(new PrintStream(out)); 
-        UpdatePlayer.majFinDeTour(p); 
+        UpdatePlayer.resolveEndOTurn(p); 
         System.setOut(System.out); 
         assertThat(out.toString(), is("")); 
     }
